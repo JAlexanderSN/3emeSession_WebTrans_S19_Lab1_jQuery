@@ -15,6 +15,13 @@
             cursor: pointer;
         }
     </style>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/2.3.8/js/dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.3.8/css/dataTables.dataTables.min.css">
+
+
 </head>
 
 <body>
@@ -504,73 +511,6 @@
     </table>
 
     <script>
-        let clickElements = [];
-        let elements = document.getElementsByTagName("tr");
-        let selectionText = document.getElementById("selection");
-
-        function AugmenterCompteur(count) {
-            if (count > 1)
-                selectionText.innerText = count + " éléments sélectionnés";
-            else
-                selectionText.innerText = count + " élément sélectionné";
-        }
-
-        function ChangerColour(element, backgroundColor, fontWeight, count) {
-
-            element.style.backgroundColor = backgroundColor;
-
-            element.style.fontWeight = fontWeight;
-
-            AugmenterCompteur(count)
-
-        }
-
-
-
-        for (let i = 0; i < elements.length; i++) {
-
-            let element = elements[i];
-
-            element.addEventListener("click", function (event) {
-
-                let targetIndex = clickElements.indexOf(this)
-
-                if (targetIndex === -1) {
-
-                    let backgroundColor = "lightblue";
-
-                    let fontWeight = "900";
-
-                    clickElements.push(element);
-
-                    ChangerColour(element, backgroundColor, fontWeight, clickElements.length)
-
-                }
-                else {
-
-                    let backgroundColor = "white";
-
-                    let fontWeight = "500";
-
-                    clickElements.splice(targetIndex, 1)
-
-                    ChangerColour(element, backgroundColor, fontWeight, clickElements.length)
-
-                }
-
-            });
-
-            element.addEventListener("mouseover", function (event) {
-                element.style.border = "1px solid red"
-            })
-
-            element.addEventListener("mouseout", function (event) {
-                element.style.border = ""
-            })
-
-        }
-
-
 
 
 
@@ -607,6 +547,134 @@
         //     })
 
         // }
+
+
+        // VERSION DE LA DE ARRIBA 
+        // let clickElements = [];
+        // let elements = document.getElementsByTagName("tr");
+        // let selectionText = document.getElementById("selection");
+
+        // function AugmenterCompteur(count) {
+        //     if (count > 1)
+        //         selectionText.innerText = count + " éléments sélectionnés";
+        //     else
+        //         selectionText.innerText = count + " élément sélectionné";
+        // }
+
+        // function ChangerColour(element, backgroundColor, fontWeight, count) {
+
+        //     element.style.backgroundColor = backgroundColor;
+
+        //     element.style.fontWeight = fontWeight;
+
+        //     AugmenterCompteur(count)
+
+        // }
+
+
+        // for (let i = 0; i < elements.length; i++) {
+
+        //     let element = elements[i];
+
+        //     element.addEventListener("click", function (event) {
+
+        //         let targetIndex = clickElements.indexOf(this)
+
+        //         if (targetIndex === -1) {
+
+        //             let backgroundColor = "lightblue";
+
+        //             let fontWeight = "900";
+
+        //             clickElements.push(element);
+
+        //             ChangerColour(element, backgroundColor, fontWeight, clickElements.length)
+
+        //         }
+        //         else {
+
+        //             let backgroundColor = "white";
+
+        //             let fontWeight = "500";
+
+        //             clickElements.splice(targetIndex, 1)
+
+        //             ChangerColour(element, backgroundColor, fontWeight, clickElements.length)
+
+        //         }
+
+        //     });
+
+        //     element.addEventListener("mouseover", function (event) {
+        //         element.style.border = "1px solid red"
+        //     })
+
+        //     element.addEventListener("mouseout", function (event) {
+        //         element.style.border = ""
+        //     })
+
+        // }
+
+
+
+        //JQUERY CON EL $()
+        // function refreshSelectionText(count) {
+        //     if (count > 1)
+        //         $("#selection").text(count + " éléments sélectionnés");
+        //     else
+        //         $("#selection").text(count + " élément sélectionné");
+        // }
+
+        // function changeStyle(element, backgroundColor, fontWeight, border) {
+        //     if (backgroundColor !== null) {
+        //         $(element).css("background-color", backgroundColor);
+        //     }
+        //     if (fontWeight !== null) {
+        //         $(element).css("font-weight", fontWeight);
+        //     }
+        //     if (border !== null) {
+        //         $(element).css("border", border);
+        //     }
+        // }
+
+        // let clickElements = [];
+
+        // $("tr").on("click", function () {
+        //     let target = this;
+        //     let targetIndex = clickElements.indexOf(target);
+        //     if (targetIndex === -1) {
+        //         changeStyle(target, "lightblue", "900", null);
+        //         clickElements.push(target);
+        //         refreshSelectionText(clickElements.length);
+        //     }
+        //     else {
+        //         changeStyle(target, "white", "500", null);
+        //         clickElements.splice(targetIndex, 1);
+        //         refreshSelectionText(clickElements.length);
+        //     }
+        // }).on("mouseover", function () {
+        //     changeStyle(this, null, null, "1px solid red");
+        // }).on("mouseout", function () {
+        //     changeStyle(this, null, null, "");
+        // });
+
+
+        //Database
+        $('table').DataTable();
+
+        let table = $('table').DataTable();  // Crée la datatable
+
+        function refreshSelectionText(count) { // Notre fct qui compte le nombre de lignes sélectionnées
+            if (count > 1)
+                $("#selection").text(count + " éléments sélectionnés");
+            else
+                $("#selection").text(count + " élément sélectionné");
+        }
+
+        $('table tbody').on('click', 'tr', function () {
+            $(this).toggleClass('selected');
+            refreshSelectionText(table.rows('.selected').data().length);
+        });
 
 
 
